@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Data {
+  id              Int     @id @default(autoincrement())
+  location        String?
+  pageid          String?
+  isactive        Float?
+  desc            String?
+  parentid        String?
+  path            String?
+  pagetype        String?
+  title           String?
+  metatitle       String?
+  metadescription String? @db.NVarChar(max)
+  seosection      String? @db.NVarChar(max)
+  icon            String?
+  booknowurl      String?
+  video           String?
+  smallimage      String?
+  smalltext       String? @db.NVarChar(max)
+  headerimage     String?
+  imageTitle      String?
+  section1        String? @db.NVarChar(max)
+  sectionImage    String?
+  section2        String? @db.NVarChar(max)
+  section2Image   String?
+  Seoheader       String?
+  ruleyes         String? @db.NVarChar(max)
+  ruleno          String? @db.NVarChar(max)
+  warnings        String? @db.NVarChar(max)
+  booknowlink     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Blog {
+  id        Int     @id @default(autoincrement())
+  location  String?
+  title     String?
+  category  String?
+  tags      String?
+  shortdesc String? @db.NVarChar(max)
+  format    String? @db.NVarChar(max)
+  image     String?
+  video     String?
+  postdate  String?
+  views     Float?
+  author    String?
+  htmldesc  String? @db.NVarChar(max)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlogReviews {
+  id      Int     @id @default(autoincrement())
+  comment String  @db.NVarChar(max)
+  user    String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Locations {
+  id         Int     @id @default(autoincrement())
+  locations  String?
+  address    String?
+  phone      String?
+  map        String? @db.NVarChar(max)
+  locationid String?
+  hours      String?
+  email      String?
+  desc       String?
+  smallimage String?
+  tag        String?
+  rollerurl  String?
+  facebook   String?
+  insta      String?
+  twitter    String?
+  tiktok     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Config {
+  id       Int     @id @default(autoincrement())
+  location String?
+  key      String?
+  value    String? @db.NVarChar(max)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Promo {
+  id          Int      @id @default(autoincrement())
+  location    String?
+  promo       String?
+  img         String?
+  description String?  @db.NVarChar(max)
+  startdate   DateTime
+  enddate     DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BirthdayPackages {
+  id        Int     @id @default(autoincrement())
+  location  String?
+  plantitle String?
+  category  String?
+  price     Float?
+  period    String?
+  includes  String? @db.NVarChar(max)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FAQ {
+  id       Int     @id @default(autoincrement())
+  location String?
+  question String? @db.NVarChar(max)
+  answer   String? @db.NVarChar(max)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
