@@ -6,7 +6,7 @@ const unsubscribe = async (email,BulkEmail) => {
     try {
        let m = new Date();
        let LastUpdate = m.getUTCFullYear() +"-"+ (m.getUTCMonth()+1) +"-"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
-        let pool = await sql.connect(config.sql);
+        let pool = sql.connect(config.sql.primary);
                 const sqlQueries = await utils.loadSqlQueries('events');
                 const update = await pool.request()
                                 .input('email',email)
@@ -22,7 +22,7 @@ const unsubscribe = async (email,BulkEmail) => {
 const creatInquiry = async (eventdata) => {
     try {
      
-        let pool = await sql.connect(config.sql);
+        let pool = sql.connect(config.sql.primary);
         const sqlQueries = await utils.loadSqlQueries('events');
         let m = new Date();
         let LastUpdate = m.getUTCFullYear() +"-"+ (m.getUTCMonth()+1) +"-"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();

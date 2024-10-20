@@ -1,42 +1,47 @@
-const axios = require('axios');
-const XLSX = require('xlsx');
+const sql = require('mssql');
+const config = require('../config'); // Assuming this is your config file
 
-// Correctly define getSheetData as an async function
-async function getSheetData(sheetName, location) {
-    const gcpBucketUrl = `https://docs.google.com/spreadsheets/d/1zpV1juNopYe4bnFP959w3ldwj0dC-3WF/export?format=xlsx`;
+async function getTableData(tableName, location) {
     try {
-        const response = await axios.get(gcpBucketUrl, { responseType: 'arraybuffer' });
-        const data = response.data;
-        const workbook = XLSX.read(data, { type: 'buffer' });
-        const worksheet = workbook.Sheets[sheetName];
-        if (!worksheet) {
-            throw new Error(`Sheet "${sheetName}" not found.`);
-        }
-        let jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+        // Connect to secondary MSSQL database
+        const pool = await sql.connect(config.sql.secondary);
+        if(pool) console.log("Connected to server:")
+            else console.log("Error connectiong to the server")
+
+        // Query data from the appropriate table
+        const query = `SELECT * FROM ${tableName}`;
+        const result = await pool.request().query(query);
+        let jsonData = result.recordset;
 
         // Filter and transform data appropriately
-        if (sheetName === 'config') {
+        if (tableName === 'config') {
             jsonData = jsonData.map(m => ({
                 ...m,
                 value: m.value.replace(/\r?\n|\r/g, "<br/>")
             }));
         }
-        console.log(location);
-        if(!location)
-        {
+
+        // Filter by location if provided
+        if (!location) {
             return jsonData;
+        } else {
+            return jsonData.filter(m => !m.location || m.location.includes(location) || m.location === '');
         }
-        else 
-        return jsonData.filter(m => m.location.indexOf(location) > -1 || m.location === '');
+
     } catch (error) {
-        console.error(`Error fetching data from sheet "${sheetName}":`, error);
+        console.error(`Error fetching data from table "${tableName}":`, error);
         throw error;
+    } finally {
+        // Close the MSSQL connection
+        await sql.close();
     }
 }
 
+
+
 const fetchSheetData = async (req, res) => {
     try {
-        const dt = await getSheetData(req.query.sheetname, req.query.location);
+        const dt = await getTableData(req.query.sheetname, req.query.location);
         res.status(200).send(dt);
     } catch (error) {
         res.status(500).send(error.message);
@@ -45,7 +50,7 @@ const fetchSheetData = async (req, res) => {
 
 const fetchMenuData = async (req, res) => {
     try {
-        const jsonData = await getSheetData("Data", req.query.location);
+        const jsonData = await getTableData("Data", req.query.location);
         console.log(jsonData.length)
         
         // Create an object to hold the hierarchy
@@ -75,7 +80,7 @@ const fetchMenuData = async (req, res) => {
 
 const fetchMenuData1 = async (req, res) => {
     try {
-        const jsonData = await getSheetData("Data", req.query.location);
+        const jsonData = await getTableData("Data", req.query.location);
         
         // Create an object to hold the hierarchy
         const hierarchy = {};
@@ -106,7 +111,7 @@ const fetchMenuData1 = async (req, res) => {
 
 const fetchPageData = async (req, res) => {
     try {
-        const jsonData = await getSheetData("Data", req.query.location);       
+        const jsonData = await getTableData("Data", req.query.location);       
         const filteredData = jsonData.filter(m => m.path.toUpperCase().indexOf(req.query.page.toUpperCase()) > -1);  
         res.status(200).send(filteredData);
     } catch (error) {
@@ -119,5 +124,36 @@ module.exports = {
     fetchMenuData,
     fetchMenuData1,
     fetchPageData
-
 };
+
+// async function getSheetData(sheetName, location) {
+//     const gcpBucketUrl = `https://docs.google.com/spreadsheets/d/1zpV1juNopYe4bnFP959w3ldwj0dC-3WF/export?format=xlsx`;
+//     try {
+//         const response = await axios.get(gcpBucketUrl, { responseType: 'arraybuffer' });
+//         const data = response.data;
+//         const workbook = XLSX.read(data, { type: 'buffer' });
+//         const worksheet = workbook.Sheets[sheetName];
+//         if (!worksheet) {
+//             throw new Error(`Sheet "${sheetName}" not found.`);
+//         }
+//         let jsonData = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+//         // Filter and transform data appropriately
+//         if (sheetName === 'config') {
+//             jsonData = jsonData.map(m => ({
+//                 ...m,
+//                 value: m.value.replace(/\r?\n|\r/g, "<br/>")
+//             }));
+//         }
+//         console.log(location);
+//         if(!location)
+//         {
+//             return jsonData;
+//         }
+//         else 
+//         return jsonData.filter(m => m.location.indexOf(location) > -1 || m.location === '');
+//     } catch (error) {
+//         console.error(`Error fetching data from sheet "${sheetName}":`, error);
+//         throw error;
+//     }
+// }
