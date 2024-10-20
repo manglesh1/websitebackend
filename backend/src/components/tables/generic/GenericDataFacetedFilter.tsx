@@ -52,11 +52,11 @@ export function GenericDataTableFacetedFilter<TData, TValue>({
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.has(option.value))
+                    .filter((option) => selectedValues.has(option.value.toLowerCase()))
                     .map((option) => (
                       <Badge
                         variant="secondary"
-                        key={option.value}
+                        key={option.value.toLowerCase()}
                         className="rounded-sm px-1 font-normal"
                       >
                         {option.label}
@@ -75,15 +75,15 @@ export function GenericDataTableFacetedFilter<TData, TValue>({
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
-                const isSelected = selectedValues.has(option.value)
+                const isSelected = selectedValues.has(option.value.toLowerCase())
                 return (
                   <CommandItem
-                    key={option.value}
+                    key={option.value.toLowerCase()}
                     onSelect={() => {
                       if (isSelected) {
-                        selectedValues.delete(option.value)
+                        selectedValues.delete(option.value.toLowerCase())
                       } else {
-                        selectedValues.add(option.value)
+                        selectedValues.add(option.value.toLowerCase())
                       }
                       const filterValues = Array.from(selectedValues)
                       column?.setFilterValue(
@@ -105,9 +105,9 @@ export function GenericDataTableFacetedFilter<TData, TValue>({
                       <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
                     )}
                     <span>{option.label}</span>
-                    {facets?.get(option.value) && (
+                    {facets?.get(option.value.toLowerCase()) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
-                        {facets.get(option.value)}
+                        {facets.get(option.value.toLowerCase())}
                       </span>
                     )}
                   </CommandItem>
