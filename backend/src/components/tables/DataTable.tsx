@@ -133,7 +133,7 @@ export const columns: ColumnDef<Data>[] = [
   {
     accessorKey: 'smalltext',
     header: ({ column }) => <GenericColumnHeader column={column} title="Small Text" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={100} value={cell.getValue() as string} />
   },
   {
     accessorKey: 'headerimage',
@@ -148,7 +148,7 @@ export const columns: ColumnDef<Data>[] = [
   {
     accessorKey: 'section1',
     header: ({ column }) => <GenericColumnHeader column={column} title="Section 1" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={100} value={cell.getValue() as string} />
   },
   {
     accessorKey: 'sectionImage',
@@ -173,12 +173,12 @@ export const columns: ColumnDef<Data>[] = [
   {
     accessorKey: 'ruleyes',
     header: ({ column }) => <GenericColumnHeader column={column} title="Rule Yes" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={100} value={cell.getValue() as string} />
   },
   {
     accessorKey: 'ruleno',
     header: ({ column }) => <GenericColumnHeader column={column} title="Rule No" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={100} value={cell.getValue() as string} />
   },
   {
     accessorKey: 'warnings',

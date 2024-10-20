@@ -34,7 +34,7 @@ export const blogReviewsColumns: ColumnDef<BlogReviews>[] = [
   {
     accessorKey: 'comment',
     header: ({ column }) => <GenericColumnHeader column={column} title="Comment" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={500} value={cell.getValue() as string} />
   },
   {
     accessorKey: 'user',

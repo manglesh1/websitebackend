@@ -4,13 +4,23 @@ import { ScrollArea } from './ui/scroll-area'
 
 interface ViewEditDialogProps {
     value: string
+    maxLength?: number
 }
 
-const ViewEditDialog = ({value}:ViewEditDialogProps) => {
+const ViewEditDialog = ({value, maxLength}:ViewEditDialogProps) => {
     if(!value) return null
     return (
         <Dialog>
-            <DialogTrigger>{value.length>15 ? (value.substring(0,15).replace(/(\r\n|\n|\r)/g, ' ') + " ..."):(value)}</DialogTrigger>
+            <DialogTrigger>
+                {maxLength ? 
+                    value.length>maxLength ? 
+                        (value.substring(0,maxLength).replace(/(\r\n|\n|\r)/g, ' ') + " ...")
+                        :(value)
+                    :value.length>40 ? 
+                        (value.substring(0,40).replace(/(\r\n|\n|\r)/g, ' ') + " ...")
+                        :(value)
+                }
+            </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>value</DialogTitle>

@@ -58,7 +58,7 @@ export const birthdayPackagesColumns: ColumnDef<BirthdayPackages>[] = [
   {
     accessorKey: 'includes',
     header: ({ column }) => <GenericColumnHeader column={column} title="Includes" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={1500} value={cell.getValue() as string} />
   },
   // {
   //   accessorKey: 'createdAt',

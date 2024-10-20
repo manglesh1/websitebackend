@@ -39,12 +39,12 @@ export const faqColumns: ColumnDef<FAQ>[] = [
   {
     accessorKey: 'question',
     header: ({ column }) => <GenericColumnHeader column={column} title="Question" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={500} value={cell.getValue() as string} />
   },
   {
     accessorKey: 'answer',
     header: ({ column }) => <GenericColumnHeader column={column} title="Answer" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={500} value={cell.getValue() as string} />
   },
   // {
   //   accessorKey: 'createdAt',

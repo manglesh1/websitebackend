@@ -44,7 +44,7 @@ export const configColumns: ColumnDef<Config>[] = [
   {
     accessorKey: 'value',
     header: ({ column }) => <GenericColumnHeader column={column} title="Value" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={500} value={cell.getValue() as string} />
   },
   // {
   //   accessorKey: 'createdAt',

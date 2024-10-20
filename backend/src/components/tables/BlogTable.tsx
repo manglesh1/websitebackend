@@ -39,7 +39,7 @@ export const blogColumns: ColumnDef<Blog>[] = [
   {
     accessorKey: 'title',
     header: ({ column }) => <GenericColumnHeader column={column} title="Title" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={100} value={cell.getValue() as string} />
   },
   {
     accessorKey: 'category',
@@ -54,7 +54,7 @@ export const blogColumns: ColumnDef<Blog>[] = [
   {
     accessorKey: 'shortdesc',
     header: ({ column }) => <GenericColumnHeader column={column} title="Short Description" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={100} value={cell.getValue() as string} />
   },
   {
     accessorKey: 'format',
@@ -89,7 +89,7 @@ export const blogColumns: ColumnDef<Blog>[] = [
   {
     accessorKey: 'htmldesc',
     header: ({ column }) => <GenericColumnHeader column={column} title="HTML Description" />,
-    cell: ({ cell }) => <ViewEditDialog value={cell.getValue() as string} />
+    cell: ({ cell }) => <ViewEditDialog maxLength={500} value={cell.getValue() as string} />
   },
   // {
   //   accessorKey: 'createdAt',
