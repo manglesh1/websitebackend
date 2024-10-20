@@ -4,6 +4,8 @@ import { Table } from "@tanstack/react-table"
 import { Input } from "../../ui/input"
 import { GenericTableViewOptions } from "./GenericTableViewOptions"
 import GenericCreateButton from "./GenericCreateButton"
+import { GenericDataTableFacetedFilter } from "./GenericDataFacetedFilter"
+import { locations } from "@/lib/data/locations"
 
 interface GenericTableToolbarProps<TData> {
   form: string
@@ -27,6 +29,13 @@ export function GenericTableToolbar<TData>({
           onChange={e => table.setGlobalFilter(String(e.target.value))}
           className="h-10 w-[180px] lg:w-[300px] pr-10 shadow-md border rounded-md"
         />
+        {table.getColumn("location") && (
+          <GenericDataTableFacetedFilter
+            column={table.getColumn("location")}
+            title="Location"
+            options={locations}
+          />
+        )}
       </div>
     
       <div className="font-semibold text-lg text-gray-700">{title}</div>
