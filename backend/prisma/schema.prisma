@@ -44,7 +44,7 @@ model Data {
   booknowlink     String?
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model Blog {
@@ -63,7 +63,7 @@ model Blog {
   htmldesc  String? @db.NVarChar(max)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model BlogReviews {
@@ -72,7 +72,7 @@ model BlogReviews {
   user    String?
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model Locations {
@@ -94,7 +94,7 @@ model Locations {
   tiktok     String?
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model Config {
@@ -104,7 +104,7 @@ model Config {
   value    String? @db.NVarChar(max)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model Promo {
@@ -117,7 +117,7 @@ model Promo {
   enddate     DateTime
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model BirthdayPackages {
@@ -130,7 +130,7 @@ model BirthdayPackages {
   includes  String? @db.NVarChar(max)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
 
 model FAQ {
@@ -140,5 +140,5 @@ model FAQ {
   answer   String? @db.NVarChar(max)
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt @default(now())
 }
