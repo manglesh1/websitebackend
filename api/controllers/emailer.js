@@ -4,38 +4,46 @@ const nodemailer = require("nodemailer");
 const https = require("https");
 const NodeCache =require("node-cache")
 // async..await is not allowed in global scope, must use a wrapper
-const sendmail =  async (req,res,next) =>{
+
+
+
+const sendmail = async (req, res, next) => {
   try {
-  let testAccount = await nodemailer.createTestAccount();
-  let transporter = nodemailer.createTransport({
-    host: "email-smtp.ca-central-1.amazonaws.com",
-    port: 2587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: "AKIARBYO3HCNLODELX7B", // generated ethereal user
-      pass: "BMWV7HVhaWrgjT5uJRBQtQYn8aLenSuJpN7qeYnp7oM0", // generated ethereal password
-    },
-    
-  });
-  console.log(req.body);
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: "partyoakville@aerosportsparks.ca", // sender address
-    to: req.body.locationEmail, // list of receivers
-    subject: req.body.subject, // Subject line
-    replyTo:req.body.email,
-    //text: req.message, // plain text body
-    html: "<p>Event Date:" + req.body.eventDate +" "+ req.body.eventtime  + "<br/> Name:" + req.body.name +"<br/>phone:"+ req.body.phone + "<br/>" + req.body.message , // html body
-  });
-  console.log("after send");
+    // Configure the transporter with Google Workspace SMTP settings
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465, // Use 465 for SSL (recommended) or 587 for STARTTLS
+      secure: true, // true for SSL (port 465), false for STARTTLS (port 587)
+      auth: {
+        user: 'manglesh@aerosportsparks.ca', // Your Google Workspace email
+        pass: 'nwtc ngsz vxlj youw', // Your Google Workspace App Password
+      },
+    });
 
-res.status(200).send();
+    console.log(req.body);
 
-} catch (error) {
-  console.log(error);
-  res.status(400).send(error.message);
-} 
-}
+    // Send email with defined transport object
+    const info = await transporter.sendMail({
+      from: 'partyoakville@aerosportsparks.ca', // Sender address
+      to: req.body.locationEmail, // Recipient address
+      subject: req.body.subject, // Subject line
+      replyTo: req.body.email, // Reply-to address
+      html: `<p>
+              Event Date: ${req.body.date} ${req.body.time}<br/>
+              Name: ${req.body.fullName}<br/>
+              Phone: ${req.body.phone}<br/>
+              Message: ${req.body.message}
+              Email:${req.body.email}
+            </p>`, // HTML body content
+    });
+
+    console.log('Email sent:', info.messageId);
+    res.status(200).send('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+    res.status(400).send(error.message);
+  }
+};
 
 
 
@@ -132,7 +140,6 @@ const getcamps = async (req, res, next) => {
       res.status(200).send("incorrect input");
       return;
     }
-    
     const cachedData = cache.get(reviewKey);
     const url = "https://maps.googleapis.com/maps/api/place/details/json?fields=rating,reviews&key=AIzaSyDfOsv-WRB882U3W1ij-p3Io2xe5tSCRbI&placeid=" + reviewKey;
 
